@@ -27,6 +27,7 @@ def getCoordinates():
             status=200,
             mimetype='application/json'
         )
+        return response
     return "Page Up and Working"
 
 if __name__ == '__main__':
