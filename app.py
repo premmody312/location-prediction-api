@@ -16,8 +16,8 @@ def getCoordinates():
     if request.method == 'POST':
         #print('Hello', 'World', 2+3, file=open('file.txt', 'w'))
         coord_dict = {}
-        if request.is_json():
-            coord_dict = json.loads(request.get_json())
+        #if request.is_json() != None:
+        coord_dict = json.loads(request.get_json())
         print(f"Value received : {coord_dict}", file=open('location_log.txt', 'w'))
         location_dict = {'x': 0.0, 'y': 3.4}
         location_dict['x'] =  3.14
