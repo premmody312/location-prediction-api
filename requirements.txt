@@ -44,7 +44,6 @@ scipy==1.5.4
 six==1.15.0
 sklearn==0.0
 scikit-image==0.16.2
-scikit-learn==0.22.1
 scipy==1.4.1
 threadpoolctl==2.1.0
 uritemplate==3.0.1
