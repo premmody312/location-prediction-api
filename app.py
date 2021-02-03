@@ -27,9 +27,10 @@ def getCoordinates():
             #print('Hello', 'World', 2+3, file=open('file.txt', 'w'))
             coord_dict = {}
             #if request.is_json() != None:
+
+            coord_dict = json.loads(json.dumps(request.get_json()))
             print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
             print(f"Value received : {coord_dict}")
-            coord_dict = json.loads(json.dumps(request.get_json()))
             #print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
             temp_cord_dict = {}
             wifi_list = {"Redmi Note X":"Router1", "Redmi Note X2":"Router2", "Redmi Note X3":"Router3"}
@@ -42,7 +43,7 @@ def getCoordinates():
                     if attribute in wifi_list.keys():
                         print("Value:",value)
                         temp_cord_dict[wifi_list[attribute]] = [float(value)]
-            if not temp_cord_dict:
+            if len(temp_cord_dict) !=0 and bool(temp_cord_dict):
                 coord_dict_pd = pd.DataFrame.from_dict(temp_cord_dict)
                 location_dict = {'x': 0.0, 'y': 3.4}
                 location_dict['x'] =  model_x.predict(coord_dict_pd)[0]
