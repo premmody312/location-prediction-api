@@ -27,8 +27,10 @@ def getCoordinates():
             #print('Hello', 'World', 2+3, file=open('file.txt', 'w'))
             coord_dict = {}
             #if request.is_json() != None:
-            coord_dict = json.loads(str(request.get_json()))
             print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
+            print(f"Value received : {coord_dict}")
+            coord_dict = json.loads(json.dumps(request.get_json()))
+            #print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
             temp_cord_dict = {}
             wifi_list = {"Redmi Note X":"Router1", "Redmi Note X2":"Router2", "Redmi Note X3":"Router3"}
             #for row in json.dumps(coord_dict):
