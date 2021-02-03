@@ -40,17 +40,17 @@ def getCoordinates():
                     if attribute in wifi_list.keys():
                         print("Value:",value)
                         temp_cord_dict[wifi_list[attribute]] = [float(value)]
-
-            coord_dict_pd = pd.DataFrame.from_dict(temp_cord_dict)
-            location_dict = {'x': 0.0, 'y': 3.4}
-            location_dict['x'] =  model_x.predict(coord_dict_pd)[0]
-            location_dict['y'] =  model_y.predict(coord_dict_pd)[0]
-            response = app.response_class(
-                response=json.dumps(location_dict),
-                status=200,
-                mimetype='application/json'
-            )
-            return response
+            if not temp_cord_dict:
+                coord_dict_pd = pd.DataFrame.from_dict(temp_cord_dict)
+                location_dict = {'x': 0.0, 'y': 3.4}
+                location_dict['x'] =  model_x.predict(coord_dict_pd)[0]
+                location_dict['y'] =  model_y.predict(coord_dict_pd)[0]
+                response = app.response_class(
+                    response=json.dumps(location_dict),
+                    status=200,
+                    mimetype='application/json'
+                )
+                return response
     return "Page Up and Working"
 
 @app.route("/localRequest")
