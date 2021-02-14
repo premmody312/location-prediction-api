@@ -4,10 +4,16 @@ import pickle
 import pandas as pd
 import requests
 import json
+import html2text
+
 
 app = Flask(__name__)
-filename_x = "finalized_model_x.sav"
-filename_y = "finalized_model_y.sav"
+#filename_x = "finalized_model_x.sav"
+#filename_y = "finalized_model_y.sav"
+
+filename_x = "finalized_model_x_cllg.sav"
+filename_y = "finalized_model_y_cllg.sav"
+
 model_x = pickle.load(open(filename_x, 'rb'))
 model_y = pickle.load(open(filename_y, 'rb'))
 
@@ -27,23 +33,32 @@ def getCoordinates():
             #print('Hello', 'World', 2+3, file=open('file.txt', 'w'))
             coord_dict = {}
             #if request.is_json() != None:
-
+            #Use for Android
             coord_dict = json.loads(json.dumps(request.get_json()))
+            #Use for localRequest
+            #coord_dict = json.loads(request.get_json())
             print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
             print(f"Value received : {coord_dict}")
             #print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
             temp_cord_dict = {}
-            wifi_list = {"Redmi Note X":"Router1", "Redmi Note X2":"Router2", "Redmi Note X3":"Router3"}
+            #wifi_list = {"Redmi Note X":"Router1", "Redmi Note X2":"Router2", "Redmi Note X3":"Router3"}
             #for row in json.dumps(coord_dict):
             #    print("Row:",row)
             #    for attribute, value in row.items():
             #        if attribute in wifi_list.keys():
             #            temp_cord_dict[wifi_list[attribute]] = [parseFloat(value)]
+            cols_of_interest = ['Isha', 'Efarm test', 'Redmi Note X2', 'Param', 'Param2', 'Lol 5']
+            #Actual Name is the key, Feature Name of model is kwy
+            wifi_list = {'Isha':'Isha', 'Efarm Test':'Efarm test', 'Redmi Note X2': 'Redmi Note X2', 'Param':'Param', 'Param2':'Param', 'Lol 5':'Lol 5'}
+            for col in cols_of_interest:
+                temp_cord_dict[col] = [float(2.7)]
             for attribute, value in coord_dict.items():
+                    #if attribute in wifi_list.keys():
                     if attribute in wifi_list.keys():
                         print("Value:",value)
                         temp_cord_dict[wifi_list[attribute]] = [float(value)]
             if len(temp_cord_dict) !=0 and bool(temp_cord_dict):
+                print(temp_cord_dict)
                 coord_dict_pd = pd.DataFrame.from_dict(temp_cord_dict)
                 location_dict = {'x': 0.0, 'y': 3.4}
                 location_dict['x'] =  model_x.predict(coord_dict_pd)[0]
@@ -58,9 +73,15 @@ def getCoordinates():
 
 @app.route("/localRequest")
 def localRequest():
-    url = 'https://location-classification-api.herokuapp.com/getCoordinates'
-    myobj = {"Redmi Note X":1.6381444708152757,"Redmi Note X2":1.792622696531886,"Redmi Note X3":1.938144471,"tata":2.5381444708152756,"nilam@japs":2.5381444708152756}
+    #url = 'https://location-classification-api.herokuapp.com/getCoordinates'
+    url = 'http://localhost:5000/getCoordinates'
+    #myobj = {"Redmi Note X":1.6381444708152757,"Redmi Note X2":1.792622696531886,"Redmi Note X3":1.938144471,"tata":2.5381444708152756,"nilam@japs":2.5381444708152756}
+    #myobj = {"SOMAIYA-WIFI":2.365709966975696,"SOMAIYA-GUEST":2.465709966975696,"Efarm Test":2.207329496997738,"Redmi Note X2":1.6837119514047025,"PARAM2":1.834594843519919,"Lol 5":1.5606702402547667,"Param":2.136366030648211,"Isha":2.2854795341536223,"SemHAll":2.4926226965318863}
+    #myobj = {"SOMAIYA-WIFI":2.465709966975696,"SOMAIYA-GUEST":2.515709966975696,"Lol 5":1.4606702402547669,"Efarm Test":2.2573294969977384,"Lol 2.4":2.0837119514047027,"LAB2":2.2426226965318863,"Param":2.336366030648211,"Isha":2.4854795341536224,"JioPrivateNet":2.3556687130162737,"Ronak":2.734594843519919}
+    #myobj = {"SOMAIYA-GUEST":2.738144470815276,"SOMAIYA-WIFI":2.450724130399211,"Param":1.690825861192966,"Efarm Test":1.5073294969977382,"Redmi Note X2":2.2337119514047026,"SemHAll":2.392622696531886,"PARAM2":2.484594843519919}
+    myobj = {"SOMAIYA-GUEST":2.415709966975696,"SOMAIYA-WIFI":2.7837119514047024,"Isha":1.3854795341536223,"Redmi Note X2":1.8837119514047025,"SemHAll":2.110670240254767,"Efarm Test":2.0337119514047024,"PARAM2":2.234594843519919,"Param":2.340825861192966}
     x = requests.post(url, json = json.dumps(myobj))
+
     return render_template_string(x.text)
 
 if __name__ == '__main__':
