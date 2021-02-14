@@ -4,7 +4,12 @@ import pickle
 import pandas as pd
 import requests
 import json
-import html2text
+import os
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+#import os
+#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./BigBoxStore-1e750ec615bc.json"
 
 
 app = Flask(__name__)
@@ -16,6 +21,10 @@ filename_y = "finalized_model_y_cllg.sav"
 
 model_x = pickle.load(open(filename_x, 'rb'))
 model_y = pickle.load(open(filename_y, 'rb'))
+
+cred = credentials.Certificate('./BigBoxStore-1e750ec615bc.json')
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 
 
@@ -34,9 +43,9 @@ def getCoordinates():
             coord_dict = {}
             #if request.is_json() != None:
             #Use for Android
-            coord_dict = json.loads(json.dumps(request.get_json()))
+            #coord_dict = json.loads(json.dumps(request.get_json()))
             #Use for localRequest
-            #coord_dict = json.loads(request.get_json())
+            coord_dict = json.loads(request.get_json())
             print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
             print(f"Value received : {coord_dict}")
             #print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
@@ -68,6 +77,14 @@ def getCoordinates():
                     status=200,
                     mimetype='application/json'
                 )
+
+                #firestore entry made here
+                doc_ref = db.collection(u'People_In_Store').document(u""+str(coord_dict["email_json"]))
+                doc_ref.set({
+                    u"x":float(location_dict['x']),
+                    u"y":float(location_dict['y'])
+                })
+
                 return response
     return "Page Up and Working"
 
@@ -79,7 +96,7 @@ def localRequest():
     #myobj = {"SOMAIYA-WIFI":2.365709966975696,"SOMAIYA-GUEST":2.465709966975696,"Efarm Test":2.207329496997738,"Redmi Note X2":1.6837119514047025,"PARAM2":1.834594843519919,"Lol 5":1.5606702402547667,"Param":2.136366030648211,"Isha":2.2854795341536223,"SemHAll":2.4926226965318863}
     #myobj = {"SOMAIYA-WIFI":2.465709966975696,"SOMAIYA-GUEST":2.515709966975696,"Lol 5":1.4606702402547669,"Efarm Test":2.2573294969977384,"Lol 2.4":2.0837119514047027,"LAB2":2.2426226965318863,"Param":2.336366030648211,"Isha":2.4854795341536224,"JioPrivateNet":2.3556687130162737,"Ronak":2.734594843519919}
     #myobj = {"SOMAIYA-GUEST":2.738144470815276,"SOMAIYA-WIFI":2.450724130399211,"Param":1.690825861192966,"Efarm Test":1.5073294969977382,"Redmi Note X2":2.2337119514047026,"SemHAll":2.392622696531886,"PARAM2":2.484594843519919}
-    myobj = {"SOMAIYA-GUEST":2.415709966975696,"SOMAIYA-WIFI":2.7837119514047024,"Isha":1.3854795341536223,"Redmi Note X2":1.8837119514047025,"SemHAll":2.110670240254767,"Efarm Test":2.0337119514047024,"PARAM2":2.234594843519919,"Param":2.340825861192966}
+    myobj = {"SOMAIYA-GUEST":2.415709966975696,"SOMAIYA-WIFI":2.7837119514047024,"Isha":1.3854795341536223,"Redmi Note X2":1.8837119514047025,"SemHAll":2.110670240254767,"Efarm Test":2.0337119514047024,"PARAM2":2.234594843519919,"Param":2.340825861192966,"email_json":3232}
     x = requests.post(url, json = json.dumps(myobj))
 
     return render_template_string(x.text)
