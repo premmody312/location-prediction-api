@@ -8,6 +8,8 @@ import os
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+from os import environ
+
 #import os
 #os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./BigBoxStore-1e750ec615bc.json"
 
@@ -22,7 +24,21 @@ filename_y = "finalized_model_y_cllg.sav"
 model_x = pickle.load(open(filename_x, 'rb'))
 model_y = pickle.load(open(filename_y, 'rb'))
 
-cred = credentials.Certificate('./BigBoxStore-1e750ec615bc.json')
+ENV_KEYS = {
+    "type": "service_account",
+    "private_key_id": str(environ["FIREBASE_PRIVATE_KEY_ID"]),
+    "private_key": str(environ["FIREBASE_PRIVATE_KEY"]).replace("\\n", "\n"),
+    "client_email": str(environ["FIREBASE_CLIENT_EMAIL"]),
+    "client_id": str(environ["FIREBASE_CLIENT_ID"]),
+    "token_uri": str(environ["FIREBASE_TOKEN_URI"]),
+    "auth_uri": str(environ["FIREBASE_AUTH_URI"]),
+    "project_id": str(environ["FIREBASE_PROJECT_ID"]),
+    "auth_provider_x509_cert_url": str("https://www.googleapis.com/oauth2/v1/certs"),
+    "client_x509_cert_url": str(environ["FIREBASE_CLIENT_URI"])
+
+}
+print("ENV KEYS:", ENV_KEYS)
+cred = credentials.Certificate(ENV_KEYS)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
