@@ -59,9 +59,9 @@ def getCoordinates():
             coord_dict = {}
             #if request.is_json() != None:
             #Use for Android
-            #coord_dict = json.loads(json.dumps(request.get_json()))
+            coord_dict = json.loads(json.dumps(request.get_json()))
             #Use for localRequest
-            coord_dict = json.loads(request.get_json())
+            #coord_dict = json.loads(request.get_json())
             print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
             print(f"Value received : {coord_dict}")
             #print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
@@ -106,8 +106,8 @@ def getCoordinates():
 
 @app.route("/localRequest")
 def localRequest():
-    #url = 'https://location-classification-api.herokuapp.com/getCoordinates'
-    url = 'http://localhost:5000/getCoordinates'
+    url = 'https://location-classification-api.herokuapp.com/getCoordinates'
+    #url = 'http://localhost:5000/getCoordinates'
     #myobj = {"Redmi Note X":1.6381444708152757,"Redmi Note X2":1.792622696531886,"Redmi Note X3":1.938144471,"tata":2.5381444708152756,"nilam@japs":2.5381444708152756}
     #myobj = {"SOMAIYA-WIFI":2.365709966975696,"SOMAIYA-GUEST":2.465709966975696,"Efarm Test":2.207329496997738,"Redmi Note X2":1.6837119514047025,"PARAM2":1.834594843519919,"Lol 5":1.5606702402547667,"Param":2.136366030648211,"Isha":2.2854795341536223,"SemHAll":2.4926226965318863}
     #myobj = {"SOMAIYA-WIFI":2.465709966975696,"SOMAIYA-GUEST":2.515709966975696,"Lol 5":1.4606702402547669,"Efarm Test":2.2573294969977384,"Lol 2.4":2.0837119514047027,"LAB2":2.2426226965318863,"Param":2.336366030648211,"Isha":2.4854795341536224,"JioPrivateNet":2.3556687130162737,"Ronak":2.734594843519919}
