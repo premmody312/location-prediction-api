@@ -56,6 +56,15 @@ def getCoordinates():
     if request.method == 'POST':
         if request.get_json() != None:
             #print('Hello', 'World', 2+3, file=open('file.txt', 'w'))
+            coord_dict_pd = pd.DataFrame.from_dict(temp_cord_dict)
+            location_dict = {'x': 183.0, 'y': 70.4}
+            location_dict['x'] =  model_x.predict(coord_dict_pd)[0]
+            location_dict['y'] =  model_y.predict(coord_dict_pd)[0]
+            response = app.response_class(
+                response=json.dumps(location_dict),
+                status=200,
+                mimetype='application/json'
+            )
             coord_dict = {}
             #if request.is_json() != None:
             #Use for Android
