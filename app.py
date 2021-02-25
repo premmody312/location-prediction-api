@@ -18,8 +18,8 @@ app = Flask(__name__)
 #filename_x = "finalized_model_x.sav"
 #filename_y = "finalized_model_y.sav"
 
-filename_x = "finalized_model_x_cllg.sav"
-filename_y = "finalized_model_y_cllg.sav"
+filename_x = "finalized_model_x_cllg2.sav"
+filename_y = "finalized_model_y_cllg2.sav"
 
 model_x = pickle.load(open(filename_x, 'rb'))
 model_y = pickle.load(open(filename_y, 'rb'))
@@ -72,9 +72,10 @@ def getCoordinates():
             #    for attribute, value in row.items():
             #        if attribute in wifi_list.keys():
             #            temp_cord_dict[wifi_list[attribute]] = [parseFloat(value)]
-            cols_of_interest = ['Isha', 'Efarm test', 'Redmi Note X2', 'Param', 'Param2', 'Lol 5']
+            #cols_of_interest = ['Isha', 'Efarm test', 'Redmi Note X2', 'Param', 'Param2', 'Lol 5']
+            cols_of_interest = ['Isha', 'RedmiNoteX2', 'Param', 'PARAM2', 'Lol5', 'ASUS_X00PD','EfarmTest', 'Lol2']
             #Actual Name is the key, Feature Name of model is kwy
-            wifi_list = {'Isha':'Isha', 'Efarm Test':'Efarm test', 'Redmi Note X2': 'Redmi Note X2', 'Param':'Param', 'Param2':'Param', 'Lol 5':'Lol 5'}
+            wifi_list = {'Isha':'Isha', 'Efarm Test':'EfarmTest', 'Redmi Note X2': 'RedmiNoteX2', 'Param':'Param', 'PARAM2':'PARAM2', 'Lol 5':'Lol5', 'Lol 2.4':'Lol2', 'ASUS_X00PD': 'ASUS_X00PD'}
             for col in cols_of_interest:
                 temp_cord_dict[col] = [float(2.7)]
             for attribute, value in coord_dict.items():
