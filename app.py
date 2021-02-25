@@ -59,9 +59,9 @@ def getCoordinates():
             coord_dict = {}
             #if request.is_json() != None:
             #Use for Android
-            #coord_dict = json.loads(json.dumps(request.get_json()))
+            coord_dict = json.loads(json.dumps(request.get_json()))
             #Use for localRequest
-            coord_dict = json.loads(request.get_json())
+            #coord_dict = json.loads(request.get_json())
             print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
             print(f"Value received : {coord_dict}")
             #print(f"Value received : {coord_dict}", file=open('location_log.txt', 'a'))
