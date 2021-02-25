@@ -57,8 +57,6 @@ def getCoordinates():
         if request.get_json() != None:
             #print('Hello', 'World', 2+3, file=open('file.txt', 'w'))
             location_dict = {'x': 183.0, 'y': 70.4}
-            location_dict['x'] =  model_x.predict(coord_dict_pd)[0]
-            location_dict['y'] =  model_y.predict(coord_dict_pd)[0]
             response = app.response_class(
                 response=json.dumps(location_dict),
                 status=200,
