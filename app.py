@@ -56,6 +56,12 @@ def getCoordinates():
     if request.method == 'POST':
         if request.get_json() != None:
             #print('Hello', 'World', 2+3, file=open('file.txt', 'w'))
+            location_dict = {'x': 662.0, 'y': 256.4}
+            response = app.response_class(
+                response=json.dumps(location_dict),
+                status=200,
+                mimetype='application/json'
+            )
             coord_dict = {}
             #if request.is_json() != None:
             #Use for Android
